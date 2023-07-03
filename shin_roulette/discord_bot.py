@@ -1,31 +1,31 @@
-import logging
-import discord
-from discord.ext import commands
+import os
 
-from shin_roulette.constants import DISCORD_BOT_TOKEN, TESTING_GUILD
+from dotenv import load_dotenv
+from interactions import Intents
+from interactions.ext import prefixed_commands
 
-handler = logging.FileHandler(filename='discord.log',
-                              encoding='utf-8',
-                              mode='w')
+from core.init_logging import init_logging
+from core.base import CustomClient
+from core.extensions_loader import load_extensions
 
-intents = discord.Intents.default()
-
-extensions = ['cogs.sync', 'cogs.roulette']
-
-bot = commands.Bot(command_prefix=commands.when_mentioned, intents=intents)
-
-
-@bot.event
-async def on_ready():
-    print(f'Logged in as {bot.user} (ID: {bot.user.id})')
-
-
-@bot.event
-async def setup_hook():
-    for extension in extensions:
-        await bot.load_extension(extension)
-    bot.tree.copy_global_to(guild=TESTING_GUILD)
-
+#@bot.event
+#async def setup_hook():
+#    for extension in extensions:
+#        await bot.load_extension(extension)
+#    testing_guild_id = os.getenv("TEST_GUILD_ID")
+#    if testing_guild_id:
+#        testing_guild = discord.Object(id=testing_guild_id)
+#        bot.tree.copy_global_to(guild=testing_guild)
 
 if __name__ == '__main__':
-    bot.run(DISCORD_BOT_TOKEN, log_handler=handler)
+    load_dotenv()  # take environment variables from .env
+
+    init_logging()
+
+    bot = CustomClient(intents=Intents.DEFAULT, auto_defer=True)
+    prefixed_commands.setup(bot)
+
+    load_extensions(bot=bot)
+    bot.load_extension("interactions.ext.jurigged")
+
+    bot.run(os.getenv("DISCORD_BOT_TOKEN"))

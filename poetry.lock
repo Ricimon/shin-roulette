@@ -211,7 +211,6 @@ packaging = ">=22.0"
 pathspec = ">=0.9.0"
 platformdirs = ">=2"
 tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
-typing-extensions = {version = ">=3.10.0.0", markers = "python_version < \"3.10\""}
 
 [package.extras]
 colorama = ["colorama (>=0.4.3)"]
@@ -343,24 +342,60 @@ files = [
 graph = ["objgraph (>=1.7.2)"]
 
 [[package]]
-name = "discord-py"
-version = "2.3.1"
-description = "A Python wrapper for the Discord API"
+name = "discord-py-interactions"
+version = "5.7.0"
+description = "Easy, simple, scalable and modular: a Python API wrapper for interactions."
 optional = false
-python-versions = ">=3.8.0"
+python-versions = ">=3.10"
 files = [
-    {file = "discord.py-2.3.1-py3-none-any.whl", hash = "sha256:149652f24da299706270bf8c03c2fcf80cf1caf3a480744c61d5b001688b380d"},
-    {file = "discord.py-2.3.1.tar.gz", hash = "sha256:8eb4fe66b5d503da6de3a8425e23012711dc2fbcd7a782107a92beac15ee3459"},
+    {file = "discord-py-interactions-5.7.0.tar.gz", hash = "sha256:2e24aa38661dd8d99f27d6d8a114e84e8e409bd97a8377275164ef3f9bd31435"},
+    {file = "discord_py_interactions-5.7.0-py3-none-any.whl", hash = "sha256:0834f5e478202ce77c109e5704c41d03d72da6cfa68be02935bf2c8278e7adb2"},
 ]
 
 [package.dependencies]
-aiohttp = ">=3.7.4,<4"
+aiohttp = "*"
+attrs = ">=22.1"
+discord-typings = ">=0.5.1"
+emoji = "*"
+tomli = "*"
 
 [package.extras]
-docs = ["sphinx (==4.4.0)", "sphinxcontrib-trio (==1.1.2)", "sphinxcontrib-websupport", "typing-extensions (>=4.3,<5)"]
-speed = ["Brotli", "aiodns (>=1.1)", "cchardet (==2.1.7)", "orjson (>=3.5.4)"]
-test = ["coverage[toml]", "pytest", "pytest-asyncio", "pytest-cov", "pytest-mock", "typing-extensions (>=4.3,<5)"]
-voice = ["PyNaCl (>=1.3.0,<1.6)"]
+all = ["Brotli", "PyNaCl (>=1.5.0,<1.6)", "aioconsole (>=0.6.0)", "aiodns", "faust-cchardet", "jurigged", "orjson", "sentry-sdk", "uvloop"]
+console = ["aioconsole (>=0.6.0)"]
+dev = ["Brotli", "PyNaCl (>=1.5.0,<1.6)", "aioconsole (>=0.6.0)", "aiodns", "faust-cchardet", "jurigged", "mkdocs-autorefs", "mkdocs-awesome-pages-plugin", "mkdocs-git-committers-plugin-2", "mkdocs-git-revision-date-localized-plugin", "mkdocs-material", "mkdocs-minify-plugin", "mkdocstrings-python", "orjson", "pre-commit", "pytest", "pytest-asyncio", "pytest-cov", "python-dotenv", "sentry-sdk", "typeguard", "uvloop"]
+docs = ["Brotli", "PyNaCl (>=1.5.0,<1.6)", "aioconsole (>=0.6.0)", "aiodns", "faust-cchardet", "jurigged", "mkdocs-autorefs", "mkdocs-awesome-pages-plugin", "mkdocs-git-committers-plugin-2", "mkdocs-git-revision-date-localized-plugin", "mkdocs-material", "mkdocs-minify-plugin", "mkdocstrings-python", "orjson", "sentry-sdk", "uvloop"]
+jurigged = ["jurigged"]
+sentry = ["sentry-sdk"]
+speedup = ["Brotli", "aiodns", "faust-cchardet", "orjson", "uvloop"]
+tests = ["pytest", "pytest-asyncio", "pytest-cov", "python-dotenv", "typeguard"]
+voice = ["PyNaCl (>=1.5.0,<1.6)"]
+
+[[package]]
+name = "discord-typings"
+version = "0.6.0"
+description = "Python typings of payloads that Discord sends"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "discord_typings-0.6.0-py3-none-any.whl", hash = "sha256:506cd96524571a311db541a0f5a802c35a58aba9fe46e1e51c5bcf1c5bef96ec"},
+    {file = "discord_typings-0.6.0.tar.gz", hash = "sha256:d65ac8c83c690135b5e12c5b43382b4a0ffc459c0e2a696536d0db542e051858"},
+]
+
+[package.dependencies]
+typing_extensions = ">=4.3,<5"
+
+[[package]]
+name = "emoji"
+version = "2.6.0"
+description = "Emoji for Python"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+files = [
+    {file = "emoji-2.6.0.tar.gz", hash = "sha256:39ad95c9ba270cdfbd141d20c2ebcfc4e295d010b605de66908a098a3ba63a3c"},
+]
+
+[package.extras]
+dev = ["coverage", "coveralls", "pytest"]
 
 [[package]]
 name = "frozenlist"
@@ -455,6 +490,25 @@ files = [
     {file = "idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},
     {file = "idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
 ]
+
+[[package]]
+name = "importlib-metadata"
+version = "6.7.0"
+description = "Read metadata from Python packages"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "importlib_metadata-6.7.0-py3-none-any.whl", hash = "sha256:cb52082e659e97afc5dac71e79de97d8681de3aa07ff18578330904a9d18e5b5"},
+    {file = "importlib_metadata-6.7.0.tar.gz", hash = "sha256:1aaf550d4f73e5d6783e7acb77aec43d49da8017410afae93822cc9cca98c4d4"},
+]
+
+[package.dependencies]
+zipp = ">=0.5"
+
+[package.extras]
+docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
+perf = ["ipython"]
+testing = ["flufl.flake8", "importlib-resources (>=1.3)", "packaging", "pyfakefs", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-mypy (>=0.9.1)", "pytest-perf (>=0.9.2)", "pytest-ruff"]
 
 [[package]]
 name = "isort"
@@ -683,11 +737,24 @@ mccabe = ">=0.6,<0.8"
 platformdirs = ">=2.2.0"
 tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 tomlkit = ">=0.10.1"
-typing-extensions = {version = ">=3.10.0", markers = "python_version < \"3.10\""}
 
 [package.extras]
 spelling = ["pyenchant (>=3.2,<4.0)"]
 testutils = ["gitpython (>3)"]
+
+[[package]]
+name = "python-dotenv"
+version = "1.0.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"},
+    {file = "python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
 
 [[package]]
 name = "tomli"
@@ -713,13 +780,13 @@ files = [
 
 [[package]]
 name = "typing-extensions"
-version = "4.7.0"
+version = "4.7.1"
 description = "Backported and Experimental Type Hints for Python 3.7+"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "typing_extensions-4.7.0-py3-none-any.whl", hash = "sha256:5d8c9dac95c27d20df12fb1d97b9793ab8b2af8a3a525e68c80e21060c161771"},
-    {file = "typing_extensions-4.7.0.tar.gz", hash = "sha256:935ccf31549830cda708b42289d44b6f74084d616a00be651601a4f968e77c82"},
+    {file = "typing_extensions-4.7.1-py3-none-any.whl", hash = "sha256:440d5dd3af93b060174bf433bccd69b0babc3b15b1a8dca43789fd7f61514b36"},
+    {file = "typing_extensions-4.7.1.tar.gz", hash = "sha256:b75ddc264f0ba5615db7ba217daeb99701ad295353c45f9e95963337ceeeffb2"},
 ]
 
 [[package]]
@@ -805,6 +872,22 @@ files = [
     {file = "wrapt-1.15.0-py3-none-any.whl", hash = "sha256:64b1df0f83706b4ef4cfb4fb0e4c2669100fd7ecacfb59e091fad300d4e04640"},
     {file = "wrapt-1.15.0.tar.gz", hash = "sha256:d06730c6aed78cee4126234cf2d071e01b44b915e725a6cb439a879ec9754a3a"},
 ]
+
+[[package]]
+name = "yapf"
+version = "0.40.1"
+description = "A formatter for Python code."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "yapf-0.40.1-py3-none-any.whl", hash = "sha256:b8bfc1f280949153e795181768ca14ef43d7312629a06c43e7abd279323af313"},
+    {file = "yapf-0.40.1.tar.gz", hash = "sha256:958587eb5c8ec6c860119a9c25d02addf30a44f75aa152a4220d30e56a98037c"},
+]
+
+[package.dependencies]
+importlib-metadata = ">=6.6.0"
+platformdirs = ">=3.5.1"
+tomli = ">=2.0.1"
 
 [[package]]
 name = "yarl"
@@ -893,7 +976,22 @@ files = [
 idna = ">=2.0"
 multidict = ">=4.0"
 
+[[package]]
+name = "zipp"
+version = "3.15.0"
+description = "Backport of pathlib-compatible object wrapper for zip files"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "zipp-3.15.0-py3-none-any.whl", hash = "sha256:48904fc76a60e542af151aded95726c1a5c34ed43ab4134b597665c86d7ad556"},
+    {file = "zipp-3.15.0.tar.gz", hash = "sha256:112929ad649da941c23de50f356a2b5570c954b65150642bccdd66bf194d224b"},
+]
+
+[package.extras]
+docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
+testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)"]
+
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.8"
-content-hash = "71fc56bdbf848bf9e6860a77eb040543924e9d4cd765919883bc1edce1d79912"
+python-versions = "^3.10"
+content-hash = "eb1c8253be1409f08224acf499f78408c02ddd7a1701d81f8cd864eb9973ca0e"
