@@ -342,60 +342,24 @@ files = [
 graph = ["objgraph (>=1.7.2)"]
 
 [[package]]
-name = "discord-py-interactions"
-version = "5.7.0"
-description = "Easy, simple, scalable and modular: a Python API wrapper for interactions."
+name = "discord-py"
+version = "2.3.1"
+description = "A Python wrapper for the Discord API"
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.8.0"
 files = [
-    {file = "discord-py-interactions-5.7.0.tar.gz", hash = "sha256:2e24aa38661dd8d99f27d6d8a114e84e8e409bd97a8377275164ef3f9bd31435"},
-    {file = "discord_py_interactions-5.7.0-py3-none-any.whl", hash = "sha256:0834f5e478202ce77c109e5704c41d03d72da6cfa68be02935bf2c8278e7adb2"},
+    {file = "discord.py-2.3.1-py3-none-any.whl", hash = "sha256:149652f24da299706270bf8c03c2fcf80cf1caf3a480744c61d5b001688b380d"},
+    {file = "discord.py-2.3.1.tar.gz", hash = "sha256:8eb4fe66b5d503da6de3a8425e23012711dc2fbcd7a782107a92beac15ee3459"},
 ]
 
 [package.dependencies]
-aiohttp = "*"
-attrs = ">=22.1"
-discord-typings = ">=0.5.1"
-emoji = "*"
-tomli = "*"
+aiohttp = ">=3.7.4,<4"
 
 [package.extras]
-all = ["Brotli", "PyNaCl (>=1.5.0,<1.6)", "aioconsole (>=0.6.0)", "aiodns", "faust-cchardet", "jurigged", "orjson", "sentry-sdk", "uvloop"]
-console = ["aioconsole (>=0.6.0)"]
-dev = ["Brotli", "PyNaCl (>=1.5.0,<1.6)", "aioconsole (>=0.6.0)", "aiodns", "faust-cchardet", "jurigged", "mkdocs-autorefs", "mkdocs-awesome-pages-plugin", "mkdocs-git-committers-plugin-2", "mkdocs-git-revision-date-localized-plugin", "mkdocs-material", "mkdocs-minify-plugin", "mkdocstrings-python", "orjson", "pre-commit", "pytest", "pytest-asyncio", "pytest-cov", "python-dotenv", "sentry-sdk", "typeguard", "uvloop"]
-docs = ["Brotli", "PyNaCl (>=1.5.0,<1.6)", "aioconsole (>=0.6.0)", "aiodns", "faust-cchardet", "jurigged", "mkdocs-autorefs", "mkdocs-awesome-pages-plugin", "mkdocs-git-committers-plugin-2", "mkdocs-git-revision-date-localized-plugin", "mkdocs-material", "mkdocs-minify-plugin", "mkdocstrings-python", "orjson", "sentry-sdk", "uvloop"]
-jurigged = ["jurigged"]
-sentry = ["sentry-sdk"]
-speedup = ["Brotli", "aiodns", "faust-cchardet", "orjson", "uvloop"]
-tests = ["pytest", "pytest-asyncio", "pytest-cov", "python-dotenv", "typeguard"]
-voice = ["PyNaCl (>=1.5.0,<1.6)"]
-
-[[package]]
-name = "discord-typings"
-version = "0.6.0"
-description = "Python typings of payloads that Discord sends"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "discord_typings-0.6.0-py3-none-any.whl", hash = "sha256:506cd96524571a311db541a0f5a802c35a58aba9fe46e1e51c5bcf1c5bef96ec"},
-    {file = "discord_typings-0.6.0.tar.gz", hash = "sha256:d65ac8c83c690135b5e12c5b43382b4a0ffc459c0e2a696536d0db542e051858"},
-]
-
-[package.dependencies]
-typing_extensions = ">=4.3,<5"
-
-[[package]]
-name = "emoji"
-version = "2.6.0"
-description = "Emoji for Python"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-files = [
-    {file = "emoji-2.6.0.tar.gz", hash = "sha256:39ad95c9ba270cdfbd141d20c2ebcfc4e295d010b605de66908a098a3ba63a3c"},
-]
-
-[package.extras]
-dev = ["coverage", "coveralls", "pytest"]
+docs = ["sphinx (==4.4.0)", "sphinxcontrib-trio (==1.1.2)", "sphinxcontrib-websupport", "typing-extensions (>=4.3,<5)"]
+speed = ["Brotli", "aiodns (>=1.1)", "cchardet (==2.1.7)", "orjson (>=3.5.4)"]
+test = ["coverage[toml]", "pytest", "pytest-asyncio", "pytest-cov", "pytest-mock", "typing-extensions (>=4.3,<5)"]
+voice = ["PyNaCl (>=1.3.0,<1.6)"]
 
 [[package]]
 name = "frozenlist"
@@ -994,4 +958,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "eb1c8253be1409f08224acf499f78408c02ddd7a1701d81f8cd864eb9973ca0e"
+content-hash = "5907f5ef0000c10973acff9fcdb645b51b37dcce33531d764e3f6b05b1dbfc73"
