@@ -29,7 +29,11 @@ class RouletteBot(commands.Bot):
 
 
 if __name__ == '__main__':
-    load_dotenv()  # take environment variables from .env
+    # take environment variables from .env
+    load_dotenv()
+
+    # suppress an irrelevant warning
+    discord.VoiceClient.warn_nacl = False
 
     init_logging()
 
