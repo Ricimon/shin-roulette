@@ -2,6 +2,8 @@
 A cog for the roulette slash command.
 """
 
+from typing import List, Optional
+
 import discord
 from discord.ext import commands
 
@@ -13,14 +15,26 @@ class RouletteCog(commands.Cog):
 
     @discord.app_commands.command()
     async def roulette(self, interaction: discord.Interaction):
-        embed = discord.Embed(title="Shin Roulette", )
-        embed.add_field(name="Players", value="")
-        buttons = RouletteButtonView()
-
+        roulette = RouletteLobby()
+        (embed, buttons) = roulette.build_message()
         await interaction.response.send_message(embed=embed, view=buttons)
-        # response = await interaction.original_response()
-        # await response.add_reaction('✅')
-        # await buttons.wait()
+
+
+class RouletteLobby:
+
+    def __init__(self, players: Optional[List[str]] = None):
+        self.players = players or []
+        self.max_size = 8
+
+    def build_message(self) -> (discord.Embed, discord.ui.View):
+        embed = discord.Embed(title="Shin Roulette 🎲", )
+        embed.add_field(name=f"Players ({len(self.players)}/{self.max_size})",
+                        value='\n'.join(self.players))
+        buttons = RouletteButtonView()
+        return (embed, buttons)
+
+    def is_full(self) -> bool:
+        return len(self.players) >= self.max_size
 
 
 class RouletteButtonView(discord.ui.View):
@@ -34,14 +48,30 @@ class RouletteButtonView(discord.ui.View):
         try:
             embed = interaction.message.embeds[0]
             field = embed.fields[0]
-            embed.set_field_at(0,
-                               name=field.name,
-                               value=interaction.user.mention,
-                               inline=field.inline)
-            await interaction.message.edit(embed=embed)
+            players = field.value.splitlines()
+
+            roulette = RouletteLobby(players)
+
+            if interaction.user.mention in roulette.players:
+                await interaction.response.send_message(
+                    f'You have already joined roulette {interaction.message.jump_url}',
+                    ephemeral=True)
+                return
+
+            if roulette.is_full():
+                await interaction.response.send_message(
+                    f'Sorry, this roulette {interaction.message.jump_url} is full.',
+                    ephemeral=True)
+                return
+
+            roulette.players.append(interaction.user.mention)
+
+            (embed, buttons) = roulette.build_message()
+            await interaction.message.edit(embed=embed, view=buttons)
             await interaction.response.send_message(
                 f'You have joined roulette {interaction.message.jump_url}',
                 ephemeral=True)
+
         except Exception:
             await interaction.response.send_message(
                 "Sorry, something went wrong.", ephemeral=True)

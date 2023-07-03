@@ -11,6 +11,7 @@ packages = [{include = "shin_roulette"}]
 python = "^3.10"
 python-dotenv = "^1.0.0"
 discord-py = "^2.3.1"
+cogwatch = "^3.3.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
