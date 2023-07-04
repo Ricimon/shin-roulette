@@ -18,7 +18,13 @@ DISCORD_TOKEN=<your discord bot token>
 TEST_GUILD_ID=<guild id for quick slash command syncing> # optional
 ```
 
-To start the bot,
+Perform a one-time install of python dependencies:
+
+```bash
+poetry install
+```
+
+To start the bot:
 
 ```bash
 poetry run python shin_roulette/main.py

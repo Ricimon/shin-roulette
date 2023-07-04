@@ -67,9 +67,7 @@ class RouletteLobby:
         team_list = [f'{role} - {player}' for (player, role) in team.items()]
         team_list = sorted(team_list,
                            key=lambda x: RoleIndex(x.partition(',')[0]))
-        self.team = [
-            x.replace(',', ' (').replace(' -', ') -') for x in team_list
-        ]
+        self.team = [re.sub(r',(.+) -', r' (\1) -', x) for x in team_list]
 
         self.started = True
 
