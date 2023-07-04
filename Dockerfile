@@ -1,5 +1,10 @@
 FROM python:3.10
 
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+    build-essential libssl-dev libffi-dev \
+    cargo pkg-config
+
 RUN pip install poetry==1.4.2
 
 ENV POETRY_NO_INTERACTION=1 \
