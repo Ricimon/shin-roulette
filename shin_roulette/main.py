@@ -6,7 +6,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from shin_roulette.init_logging import init_logging
+from shin_roulette.core.init_logging import init_logging
 
 
 class RouletteBot(commands.Bot):

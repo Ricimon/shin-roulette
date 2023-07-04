@@ -21,5 +21,5 @@ TEST_GUILD_ID=<guild id for quick slash command syncing> # optional
 To start the bot,
 
 ```bash
-poetry run python shin_roulette/discord_bot.py
+poetry run python shin_roulette/main.py
 ```
