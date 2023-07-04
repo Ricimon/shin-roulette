@@ -29,3 +29,12 @@ To start the bot:
 ```bash
 poetry run python shin_roulette/main.py
 ```
+
+### Docker
+
+This bot can be run in production environments by adding the `.env` file and
+running through Docker:
+
+```bash
+docker-compose up -d
+```
