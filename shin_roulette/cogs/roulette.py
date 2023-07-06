@@ -19,6 +19,10 @@ class RouletteCog(commands.Cog):
 
     @discord.app_commands.command()
     async def roulette(self, interaction: discord.Interaction):
+        """
+        Starts a roulette lobby
+        """
+
         roulette = RouletteLobby(interaction.user)
         (embed, buttons) = roulette.build_message()
         await interaction.response.send_message(embed=embed, view=buttons)
