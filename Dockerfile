@@ -5,7 +5,7 @@ RUN apt-get update \
     build-essential libssl-dev libffi-dev \
     cargo pkg-config
 
-RUN pip install poetry==1.4.2
+RUN pip install poetry==1.5.1
 
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
@@ -16,6 +16,6 @@ WORKDIR /src
 COPY . .
 ENV PYTHONPATH=${PYTHONPATH}:${PWD}
 
-RUN poetry install --no-dev && rm -rf $POETRY_CACHE_DIR
+RUN poetry install --only main && rm -rf $POETRY_CACHE_DIR
 
 CMD poetry run python shin_roulette/main.py
