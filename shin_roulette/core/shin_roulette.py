@@ -27,6 +27,19 @@ jobsDict = {
 }
 
 fightsList = []
+
+exList = [
+    'Ultima Weapon', 'Garuda', 'Titan', 'Ifrit', 'Moogle', 'Leviathan',
+    'Ramuh', 'Shiva', 'Ravana', 'Bismarck', 'Thordan', 'Sephirot', 'Nidhogg',
+    'Sophia', 'Zurvan', 'Susano', 'Lakshmi', 'Shinryu', 'Byakko', 'Tsukuyomi',
+    'Rathalos', 'Suzaku', 'Seiryu', 'Titania', 'Innocence', 'Hades', 'Ruby',
+    'Varis', 'WoL', 'Emerald', 'Diamond', 'Zodiark', 'Hydaelyn', 'Endsinger',
+    'Barbariccia', 'Rubicante', 'Golbez'
+]
+for e in range(len(exList)):
+    exList[e] += ' EX'
+fightsList += exList
+
 for a in ['T', 'A', 'O', 'E', 'P']:
     if a == 'T':
         for i in range(5, 9):
@@ -35,15 +48,8 @@ for a in ['T', 'A', 'O', 'E', 'P']:
         for i in range(12):
             fightsList.append(str(a) + (str(i + 1) + 'S'))
 
-fightsList += [
-    'Ultima Weapon', 'Garuda', 'Titan', 'Ifrit', 'Moogle', 'Leviathan',
-    'Ramuh', 'Shiva', 'Ravana', 'Bismarck', 'Thordan', 'Sephirot', 'Nidhogg',
-    'Sophia', 'Zurvan', 'Susano', 'Lakshmi', 'Shinryu', 'Byakko', 'Tsukuyomi',
-    'Rathalos', 'Suzaku', 'Seiryu', 'Titania', 'Innocence', 'Hades', 'Ruby',
-    'Varis', 'WoL', 'Emerald', 'Diamond', 'Zodiark', 'Hydaelyn', 'Endsinger',
-    'Barbariccia', 'Rubicante', 'Golbez'
-]
 fightsList += ['UWU', 'UCOB', 'TEA', 'DSR', 'TOP']
+
 allianceList = [
     'The Royal City of Rabanastre', 'Ridorana Lighthouse', 'Orbonne Monastery',
     'The Copied Factory', 'The Puppet\'s Bunker',
