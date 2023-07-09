@@ -51,6 +51,7 @@ class RouletteLobby:
                 value='\n'.join(self.players))
             buttons = RouletteLobbyButtons(self, self.author)
         else:
+            embed.color = discord.Color.blue()
             embed.description = f"Fight: {self.fight}"
             embed.add_field(name="Roles", value='\n'.join(self.team))
             buttons = None
