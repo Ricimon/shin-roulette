@@ -2,8 +2,10 @@
 A cog for the roulette slash command.
 """
 
+import asyncio
 import logging
 import re
+import time
 from typing import List, Optional, Union
 
 import discord
@@ -30,6 +32,8 @@ class RouletteCog(commands.Cog):
 
 class RouletteLobby:
 
+    # pylint: disable=too-many-instance-attributes
+
     def __init__(self,
                  author: Union[discord.Member, discord.User],
                  players: Optional[List[str]] = None):
@@ -37,8 +41,14 @@ class RouletteLobby:
         self.players = players or []
         self.max_size = 8
         self.started = False
+        self.rerolled = False
+        self.reroll_timer = 30
+        self.reroll_timer_end = None
+        # Saved roulette data
+        self.assign_jobs = None
+        self.standard_composition = None
         self.fight = ''
-        self.team = {}
+        self.team = []
 
     def is_full(self) -> bool:
         return len(self.players) >= self.max_size
@@ -49,13 +59,29 @@ class RouletteLobby:
             embed.add_field(
                 name=f"Players ({len(self.players)}/{self.max_size})",
                 value='\n'.join(self.players))
-            buttons = RouletteLobbyButtons(self, self.author)
+            buttons = RouletteLobbyButtons(self)
         else:
-            embed.color = discord.Color.blue()
-            embed.description = f"Fight: {self.fight}"
+            embed.description = f"Fight: **{self.fight}**{' (rerolled)' if self.rerolled else ''}"
             embed.add_field(name="Roles", value='\n'.join(self.team))
-            buttons = None
+            if not self.rerolled and self.reroll_timer_end > int(time.time()):
+                embed.add_field(
+                    name='',
+                    value=f'Reroll ends <t:{self.reroll_timer_end}:R>',
+                    inline=False)
+                buttons = RouletteRerollView(self)
+            else:
+                buttons = None
         return (embed, buttons)
+
+    def run_roulette(self, players: List[str], assign_jobs: bool,
+                     standard_composition: bool):
+        # A bunch of string manipulation that can be tidied with Model classes
+        (self.fight, team) = ShinRoulette(players, assign_jobs,
+                                          standard_composition)
+        team_list = [f'{role} - {player}' for (player, role) in team.items()]
+        team_list = sorted(team_list,
+                           key=lambda x: RoleIndex(x.partition(',')[0]))
+        self.team = [re.sub(r',(.+) -', r' (\1) -', x) for x in team_list]
 
     async def start(self, message: discord.Message, assign_jobs: bool,
                     standard_composition: bool):
@@ -66,15 +92,41 @@ class RouletteLobby:
             'Starting roulette with options [players:%s] [assign_jobs:%s] [standard_composition:%s]',
             self.players, assign_jobs, standard_composition)
 
-        # A bunch of string manipulation that can be tidied with Model classes
-        (self.fight, team) = ShinRoulette(self.players, assign_jobs,
-                                          standard_composition)
-        team_list = [f'{role} - {player}' for (player, role) in team.items()]
-        team_list = sorted(team_list,
-                           key=lambda x: RoleIndex(x.partition(',')[0]))
-        self.team = [re.sub(r',(.+) -', r' (\1) -', x) for x in team_list]
+        self.assign_jobs = assign_jobs
+        self.standard_composition = standard_composition
+        self.run_roulette(self.players, assign_jobs, standard_composition)
 
+        self.reroll_timer_end = int(time.time()) + self.reroll_timer
         self.started = True
+
+        (embed, buttons) = self.build_message()
+        await message.edit(embed=embed, view=buttons)
+
+        # Start reroll timer countdown
+        await self.wait_for_reroll_timer(message)
+
+    async def wait_for_reroll_timer(self, message: discord.Message):
+        while self.reroll_timer_end > int(time.time()):
+            await asyncio.sleep(self.reroll_timer_end - int(time.time()))
+
+        (embed, buttons) = self.build_message()
+        await message.edit(embed=embed, view=buttons)
+
+    async def reroll(self, message: discord.Message):
+        if not self.started or self.rerolled:
+            logging.error(
+                "Cannot reroll. Roulette is either unstarted or already rerolled."
+            )
+            return
+
+        logging.info(
+            'Rerolling roulette with options [players:%s] [assign_jobs:%s] [standard_composition:%s]',
+            self.players, self.assign_jobs, self.standard_composition)
+
+        self.run_roulette(self.players, self.assign_jobs,
+                          self.standard_composition)
+
+        self.rerolled = True
 
         (embed, buttons) = self.build_message()
         await message.edit(embed=embed, view=buttons)
@@ -82,10 +134,8 @@ class RouletteLobby:
 
 class RouletteLobbyButtons(discord.ui.View):
 
-    def __init__(self, roulette: RouletteLobby, author: Union[discord.Member,
-                                                              discord.User]):
+    def __init__(self, roulette: RouletteLobby):
         self.roulette = roulette
-        self.author = author
         super().__init__()
 
     @discord.ui.button(label='Join', style=discord.ButtonStyle.blurple)
@@ -138,7 +188,7 @@ class RouletteLobbyButtons(discord.ui.View):
     async def start(self, interaction: discord.Interaction,
                     _button: discord.ui.Button):
         try:
-            if not interaction.user.guild_permissions.administrator and interaction.user.id != self.author.id:
+            if not interaction.user.guild_permissions.administrator and interaction.user.id != self.roulette.author.id:
                 await interaction.response.send_message(
                     'Only the roulette creator and server admins can start the roulette.',
                     ephemeral=True)
@@ -204,6 +254,30 @@ class RouletteStartOptions(discord.ui.View):
             await self.roulette.start(self.message, self.assign_jobs_flag,
                                       self.standard_composition_flag)
         except:
+            await interaction.response.send_message(
+                "Sorry, something went wrong.", ephemeral=True)
+            raise
+
+
+class RouletteRerollView(discord.ui.View):
+
+    def __init__(self, roulette: RouletteLobby):
+        super().__init__()
+        self.roulette = roulette
+
+    @discord.ui.button(style=discord.ButtonStyle.primary, label='Reroll')
+    async def reroll(self, interaction: discord.Interaction,
+                     _button: discord.ui.Button):
+        try:
+            if not interaction.user.guild_permissions.administrator and interaction.user.id != self.roulette.author.id:
+                await interaction.response.send_message(
+                    'Only the roulette creator and server admins can reroll the roulette.',
+                    ephemeral=True)
+                return
+
+            await self.roulette.reroll(interaction.message)
+
+        except Exception:
             await interaction.response.send_message(
                 "Sorry, something went wrong.", ephemeral=True)
             raise
