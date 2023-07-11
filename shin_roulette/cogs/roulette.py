@@ -4,14 +4,13 @@ A cog for the roulette slash command.
 
 import asyncio
 import logging
-import re
 import time
 from typing import List, Optional, Union
 
 import discord
 from discord.ext import commands
 
-from shin_roulette.core.shin_roulette import ShinRoulette, RoleIndex
+from shin_roulette.core import roulette_runner
 
 
 class RouletteCog(commands.Cog):
@@ -45,24 +44,26 @@ class RouletteLobby:
         self.reroll_timer = 30
         self.reroll_timer_end = None
         # Saved roulette data
-        self.assign_jobs = None
-        self.standard_composition = None
         self.fight = ''
+        self.rerolled_fight = ''
         self.team = []
 
     def is_full(self) -> bool:
         return len(self.players) >= self.max_size
 
     def build_message(self) -> (discord.Embed, discord.ui.View):
-        embed = discord.Embed(title="Shin Roulette 🎲", )
+        embed = discord.Embed(title='Shin Roulette 🎲', )
         if not self.started:
             embed.add_field(
-                name=f"Players ({len(self.players)}/{self.max_size})",
+                name=f'Players ({len(self.players)}/{self.max_size})',
                 value='\n'.join(self.players))
             buttons = RouletteLobbyButtons(self)
         else:
-            embed.description = f"Fight: **{self.fight}**{' (rerolled)' if self.rerolled else ''}"
-            embed.add_field(name="Roles", value='\n'.join(self.team))
+            description = f'Fight: **{self.fight}**'
+            if self.rerolled:
+                description += f' *(rerolled from {self.rerolled_fight})*'
+            embed.description = description
+            embed.add_field(name='Roles', value='\n'.join(self.team))
             if not self.rerolled and self.reroll_timer_end > int(time.time()):
                 embed.add_field(
                     name='',
@@ -73,37 +74,33 @@ class RouletteLobby:
                 buttons = None
         return (embed, buttons)
 
-    def run_roulette(self, players: List[str], assign_jobs: bool,
-                     standard_composition: bool):
-        # A bunch of string manipulation that can be tidied with Model classes
-        (self.fight, team) = ShinRoulette(players, assign_jobs,
-                                          standard_composition)
-        team_list = [f'{role} - {player}' for (player, role) in team.items()]
-        team_list = sorted(team_list,
-                           key=lambda x: RoleIndex(x.partition(',')[0]))
-        self.team = [re.sub(r',(.+) -', r' (\1) -', x) for x in team_list]
+    def run_roulette(self, players: List[str]):
+        while len(players) < self.max_size:
+            players.append(f'Player{len(players) + 1}')
+        roulette_result = roulette_runner.run_roulette(players)
+        self.fight = roulette_result.fight.name
+        self.team = [
+            f'{p.job.role_name} ({p.job.name}) - {p.player_name}'
+            for p in roulette_result.players
+        ]
 
-    async def start(self, message: discord.Message, assign_jobs: bool,
-                    standard_composition: bool):
+    async def start(self, interaction: discord.Interaction):
         if self.started:
             return
 
-        logging.info(
-            'Starting roulette with options [players:%s] [assign_jobs:%s] [standard_composition:%s]',
-            self.players, assign_jobs, standard_composition)
+        logging.info('Starting roulette with options [players:%s]',
+                     self.players)
 
-        self.assign_jobs = assign_jobs
-        self.standard_composition = standard_composition
-        self.run_roulette(self.players, assign_jobs, standard_composition)
+        self.run_roulette(self.players)
 
         self.reroll_timer_end = int(time.time()) + self.reroll_timer
         self.started = True
 
         (embed, buttons) = self.build_message()
-        await message.edit(embed=embed, view=buttons)
+        await interaction.response.edit_message(embed=embed, view=buttons)
 
         # Start reroll timer countdown
-        await self.wait_for_reroll_timer(message)
+        await self.wait_for_reroll_timer(interaction.message)
 
     async def wait_for_reroll_timer(self, message: discord.Message):
         while self.reroll_timer_end > int(time.time()):
@@ -112,24 +109,23 @@ class RouletteLobby:
         (embed, buttons) = self.build_message()
         await message.edit(embed=embed, view=buttons)
 
-    async def reroll(self, message: discord.Message):
+    async def reroll(self, interaction: discord.Interaction):
         if not self.started or self.rerolled:
             logging.error(
                 "Cannot reroll. Roulette is either unstarted or already rerolled."
             )
             return
 
-        logging.info(
-            'Rerolling roulette with options [players:%s] [assign_jobs:%s] [standard_composition:%s]',
-            self.players, self.assign_jobs, self.standard_composition)
+        self.rerolled_fight = self.fight
 
-        self.run_roulette(self.players, self.assign_jobs,
-                          self.standard_composition)
+        logging.info('Rerolling roulette with [players:%s]', self.players)
+
+        self.run_roulette(self.players)
 
         self.rerolled = True
 
         (embed, buttons) = self.build_message()
-        await message.edit(embed=embed, view=buttons)
+        await interaction.response.edit_message(embed=embed, view=buttons)
 
 
 class RouletteLobbyButtons(discord.ui.View):
@@ -194,66 +190,9 @@ class RouletteLobbyButtons(discord.ui.View):
                     ephemeral=True)
                 return
 
-            options = RouletteStartOptions(self.roulette, interaction.message)
-
-            await interaction.response.send_message(view=options,
-                                                    ephemeral=True)
+            await self.roulette.start(interaction)
 
         except Exception:
-            await interaction.response.send_message(
-                "Sorry, something went wrong.", ephemeral=True)
-            raise
-
-
-class RouletteStartOptions(discord.ui.View):
-
-    def __init__(self, roulette: RouletteLobby, message: discord.Message):
-        super().__init__()
-        self.roulette = roulette
-        self.message = message
-        self.assign_jobs_flag = True
-        self.standard_composition_flag = True
-
-    @discord.ui.select(options=[
-        discord.SelectOption(
-            label="Assign Jobs",
-            description="Assigns random jobs in addition to roles",
-            default=True),
-        discord.SelectOption(label="Don't Assign Jobs",
-                             description="Only assign roles")
-    ],
-                       row=0)
-    async def assign_jobs(self, interaction: discord.Interaction,
-                          select: discord.ui.Select):
-        self.assign_jobs_flag = select.values[0] == select.options[0].value
-        await interaction.response.defer()
-
-    @discord.ui.select(options=[
-        discord.SelectOption(label="Standard Composition",
-                             description="At least one melee/caster/pranged",
-                             default=True),
-        discord.SelectOption(label="Nonstandard Composition",
-                             description="Challenge mode")
-    ],
-                       row=1)
-    async def standard_composition(self, interaction: discord.Interaction,
-                                   select: discord.ui.Select):
-        self.standard_composition_flag = select.values[0] == select.options[
-            0].value
-        await interaction.response.defer()
-
-    @discord.ui.button(style=discord.ButtonStyle.primary,
-                       label="Confirm",
-                       row=2)
-    async def confirm(self, interaction: discord.Interaction,
-                      _button: discord.ui.Button):
-        try:
-            # this line is necessary to delete ephemeral messages
-            await interaction.response.defer()
-            await interaction.delete_original_response()
-            await self.roulette.start(self.message, self.assign_jobs_flag,
-                                      self.standard_composition_flag)
-        except:
             await interaction.response.send_message(
                 "Sorry, something went wrong.", ephemeral=True)
             raise
@@ -275,7 +214,7 @@ class RouletteRerollView(discord.ui.View):
                     ephemeral=True)
                 return
 
-            await self.roulette.reroll(interaction.message)
+            await self.roulette.reroll(interaction)
 
         except Exception:
             await interaction.response.send_message(
