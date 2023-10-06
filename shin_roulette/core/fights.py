@@ -18,7 +18,7 @@ extreme_fights = [
     'Sophia', 'Zurvan', 'Susano', 'Lakshmi', 'Shinryu', 'Byakko', 'Tsukuyomi',
     'Suzaku', 'Seiryu', 'Titania', 'Innocence', 'Hades', 'Ruby', 'Varis',
     'Warrior of Light', 'Emerald', 'Diamond', 'Zodiark', 'Hydaelyn',
-    'Endsinger', 'Barbariccia', 'Rubicante', 'Golbez'
+    'Endsinger', 'Barbariccia', 'Rubicante', 'Golbez', 'Zeromus'
 ]
 extreme_fights = [s + ' EX' for s in extreme_fights]
 
@@ -36,7 +36,7 @@ ultimate_fights = ['UCOB', 'UWU', 'TEA', 'DSR', 'TOP']
 alliance_fights = [
     'The Royal City of Rabanastre', 'Ridorana Lighthouse', 'Orbonne Monastery',
     'The Copied Factory', 'The Puppet\'s Bunker',
-    'The Tower at Paradigms Breach', 'Aglaia', 'Euphrosyne'
+    'The Tower at Paradigms Breach', 'Aglaia', 'Euphrosyne', 'Thaleia'
 ]
 
 standard_composition = [
