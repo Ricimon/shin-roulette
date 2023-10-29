@@ -6,10 +6,11 @@ from shin_roulette.core.jobs import Role, Subrole
 class Fight:
 
     def __init__(self, name: str, composition: List[Role | Subrole],
-                 duplicate_jobs_allowed: bool):
+                 duplicate_jobs_allowed: bool, show_role: bool):
         self.name = name
         self.composition = composition
         self.duplicate_jobs_allowed = duplicate_jobs_allowed
+        self.show_role = show_role
 
 
 extreme_fights = [
@@ -39,6 +40,10 @@ alliance_fights = [
     'The Tower at Paradigms Breach', 'Aglaia', 'Euphrosyne', 'Thaleia'
 ]
 
+guildhest_fights = ['Solemn Trinity Guildhest']
+
+exploration_fights = ['Delubrum Reginae']
+
 standard_composition = [
     Role.TANK, Role.TANK, Subrole.REGEN, Subrole.SHIELD, Subrole.MELEE,
     Subrole.PHYS, Subrole.CASTER, Role.DPS
@@ -49,12 +54,24 @@ alliance_composition = [
     Role.DPS, Role.DPS
 ]
 
+guildhest_composition = [
+    Role.TANK, Role.TANK, Role.HEALER, Role.HEALER, Role.DPS, Role.DPS,
+    Role.DPS, Role.DPS
+]
+
+exploration_composition = [Role.ANY] * 8
+
 all_fights = []
 all_fights.extend(
-    [Fight(s, standard_composition, False) for s in extreme_fights])
+    [Fight(s, standard_composition, False, True) for s in extreme_fights])
 all_fights.extend(
-    [Fight(s, standard_composition, False) for s in savage_fights])
+    [Fight(s, standard_composition, False, True) for s in savage_fights])
 all_fights.extend(
-    [Fight(s, standard_composition, False) for s in ultimate_fights])
+    [Fight(s, standard_composition, False, True) for s in ultimate_fights])
 all_fights.extend(
-    [Fight(s, alliance_composition, True) for s in alliance_fights])
+    [Fight(s, alliance_composition, True, True) for s in alliance_fights])
+all_fights.extend(
+    [Fight(s, guildhest_composition, True, True) for s in guildhest_fights])
+all_fights.extend([
+    Fight(s, exploration_composition, True, False) for s in exploration_fights
+])

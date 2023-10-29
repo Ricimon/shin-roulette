@@ -22,6 +22,7 @@ class Role(Enum):
     TANK = 1
     HEALER = 2
     DPS = 3
+    ANY = 4
 
 
 class Subrole(Enum):
@@ -58,6 +59,7 @@ available_jobs = {
     Role.TANK: [j for j in all_jobs if j.role == Role.TANK],
     Role.HEALER: [j for j in all_jobs if j.role == Role.HEALER],
     Role.DPS: [j for j in all_jobs if j.role == Role.DPS],
+    Role.ANY: all_jobs,
     Subrole.REGEN: [j for j in all_jobs if j.subrole == Subrole.REGEN],
     Subrole.SHIELD: [j for j in all_jobs if j.subrole == Subrole.SHIELD],
     Subrole.MELEE: [j for j in all_jobs if j.subrole == Subrole.MELEE],

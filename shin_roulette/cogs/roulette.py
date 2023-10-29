@@ -79,10 +79,16 @@ class RouletteLobby:
             players.append(f'Player{len(players) + 1}')
         roulette_result = roulette_runner.run_roulette(players)
         self.fight = roulette_result.fight.name
-        self.team = [
-            f'{p.job.role_name} ({p.job.name}) - {p.player_name}'
-            for p in roulette_result.players
-        ]
+        if roulette_result.fight.show_role:
+            self.team = [
+                f'{p.job.role_name} ({p.job.name}) - {p.player_name}'
+                for p in roulette_result.players
+            ]
+        else:
+            self.team = [
+                f'{p.job.name} - {p.player_name}'
+                for p in roulette_result.players
+            ]
 
     async def start(self, interaction: discord.Interaction):
         if self.started:
