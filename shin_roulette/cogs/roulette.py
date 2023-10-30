@@ -13,6 +13,31 @@ from discord.ext import commands
 from shin_roulette.core import roulette_runner
 
 
+async def remove_last_message_buttons(interaction: discord.Interaction,
+                                      bot: commands.Bot):
+    """
+    Removes the buttons on the last message sent by the bot. This aims to remove the reroll button on a roulette that's assumed to already have been attempted.
+    """
+    try:
+        channel = interaction.channel
+        async for message in channel.history(limit=100):
+            if message.author == bot.user:
+                await message.edit(view=None)
+                return
+    except:
+        return
+
+
+async def start_roulette_lobby(interaction: discord.Interaction,
+                               bot: commands.Bot,
+                               players: Optional[List[str]] = None):
+    await remove_last_message_buttons(interaction, bot)
+
+    roulette = RouletteLobby(interaction.user, players)
+    (embed, buttons) = roulette.build_message()
+    await interaction.response.send_message(embed=embed, view=buttons)
+
+
 class RouletteCog(commands.Cog):
 
     def __init__(self, bot):
@@ -23,10 +48,7 @@ class RouletteCog(commands.Cog):
         """
         Starts a roulette lobby
         """
-
-        roulette = RouletteLobby(interaction.user)
-        (embed, buttons) = roulette.build_message()
-        await interaction.response.send_message(embed=embed, view=buttons)
+        await start_roulette_lobby(interaction, self.bot)
 
 
 class RouletteLobby:
@@ -41,8 +63,6 @@ class RouletteLobby:
         self.max_size = 8
         self.started = False
         self.rerolled = False
-        self.reroll_timer = 30
-        self.reroll_timer_end = None
         # Saved roulette data
         self.fight = ''
         self.rerolled_fight = ''
@@ -50,6 +70,9 @@ class RouletteLobby:
 
     def is_full(self) -> bool:
         return len(self.players) >= self.max_size
+
+    def is_empty(self) -> bool:
+        return not self.players or len(self.players) == 0
 
     def build_message(self) -> (discord.Embed, discord.ui.View):
         embed = discord.Embed(title='Shin Roulette 🎲', )
@@ -64,11 +87,7 @@ class RouletteLobby:
                 description += f' *(rerolled from {self.rerolled_fight})*'
             embed.description = description
             embed.add_field(name='Roles', value='\n'.join(self.team))
-            if not self.rerolled and self.reroll_timer_end > int(time.time()):
-                embed.add_field(
-                    name='',
-                    value=f'Reroll ends <t:{self.reroll_timer_end}:R>',
-                    inline=False)
+            if not self.rerolled:
                 buttons = RouletteRerollView(self)
             else:
                 buttons = None
@@ -99,21 +118,10 @@ class RouletteLobby:
 
         self.run_roulette(self.players)
 
-        self.reroll_timer_end = int(time.time()) + self.reroll_timer
         self.started = True
 
         (embed, buttons) = self.build_message()
         await interaction.response.edit_message(embed=embed, view=buttons)
-
-        # Start reroll timer countdown
-        await self.wait_for_reroll_timer(interaction.message)
-
-    async def wait_for_reroll_timer(self, message: discord.Message):
-        while self.reroll_timer_end > int(time.time()):
-            await asyncio.sleep(self.reroll_timer_end - int(time.time()))
-
-        (embed, buttons) = self.build_message()
-        await message.edit(embed=embed, view=buttons)
 
     async def reroll(self, interaction: discord.Interaction):
         if not self.started or self.rerolled:
