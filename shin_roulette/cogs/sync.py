@@ -46,7 +46,7 @@ class SyncCog(commands.Cog):
 
             await message.edit(
                 content=
-                f"Synced {len(synced)} command(s) {'globally.' if spec is None else 'to the current guild.'}"
+                f"Synced {len(synced)} command(s) {'globally.' if spec == 'global' else 'to the current guild.'}"
             )
             return
 
