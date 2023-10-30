@@ -1,4 +1,4 @@
-# Shin-Roulette
+# Shin Roulette
 
 A [discord.py](https://github.com/Rapptz/discord.py) bot to do FFXIV content.
 
