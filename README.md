@@ -2,7 +2,7 @@
 
 A [discord.py](https://github.com/Rapptz/discord.py) bot to do FFXIV content.
 
-Shin Roulette picks a random 8-man raid (excluding normal trials) and assigns each player a random role and job.
+Shin Roulette picks a random 8-man raid and assigns each player a random role and job.
 
 Invite the bot here: https://discord.com/api/oauth2/authorize?client_id=1125704521251823667&permissions=2147493888&scope=bot
 
