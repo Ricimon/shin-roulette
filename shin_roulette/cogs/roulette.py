@@ -48,6 +48,9 @@ class RouletteCog(commands.Cog):
         """
         Starts a roulette lobby
         """
+
+        logging.debug('/roulette used')
+
         await start_roulette_lobby(interaction, self.bot)
 
 

@@ -13,6 +13,8 @@ class Fight:
         self.show_role = show_role
 
 
+normal_fights = ['T4N', 'T5N', 'T10N', 'T11N', 'T12N', 'T13N']
+
 extreme_fights = [
     'Ultima Weapon', 'Garuda', 'Titan', 'Ifrit', 'Moogle', 'Leviathan',
     'Ramuh', 'Shiva', 'Ravana', 'Bismarck', 'Thordan', 'Sephirot', 'Nidhogg',
@@ -42,7 +44,7 @@ alliance_fights = [
 
 guildhest_fights = ['Solemn Trinity Guildhest']
 
-exploration_fights = ['Delubrum Reginae']
+exploration_fights = ['Delubrum Reginae', 'Fall Guys!']
 
 standard_composition = [
     Role.TANK, Role.TANK, Subrole.REGEN, Subrole.SHIELD, Subrole.MELEE,
@@ -62,6 +64,8 @@ guildhest_composition = [
 exploration_composition = [Role.ANY] * 8
 
 all_fights = []
+all_fights.extend(
+    [Fight(s, standard_composition, False, True) for s in normal_fights])
 all_fights.extend(
     [Fight(s, standard_composition, False, True) for s in extreme_fights])
 all_fights.extend(

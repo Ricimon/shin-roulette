@@ -2,6 +2,7 @@
 A cog for the roulette_again slash command
 """
 
+import logging
 import re
 
 import discord
@@ -54,6 +55,8 @@ class RouletteAgainCog(commands.Cog):
         """
         Starts a roulette lobby with the same players
         """
+
+        logging.debug('/rouletteagain used')
 
         last_lobby = await find_last_roulette_lobby(interaction, self.bot)
         if last_lobby is not None:
