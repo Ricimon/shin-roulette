@@ -149,7 +149,7 @@ class RouletteLobbyButtons(discord.ui.View):
 
     def __init__(self, roulette: RouletteLobby):
         self.roulette = roulette
-        super().__init__()
+        super().__init__(timeout=None)
 
     @discord.ui.button(label='Join', style=discord.ButtonStyle.blurple)
     async def join(self, interaction: discord.Interaction,
@@ -218,8 +218,8 @@ class RouletteLobbyButtons(discord.ui.View):
 class RouletteRerollView(discord.ui.View):
 
     def __init__(self, roulette: RouletteLobby):
-        super().__init__()
         self.roulette = roulette
+        super().__init__(timeout=None)
 
     @discord.ui.button(style=discord.ButtonStyle.primary, label='Reroll')
     async def reroll(self, interaction: discord.Interaction,

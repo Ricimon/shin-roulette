@@ -73,7 +73,7 @@ class RouletteAgainButtons(discord.ui.View):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        super().__init__()
+        super().__init__(timeout=None)
 
     @discord.ui.button(label='Yes', style=discord.ButtonStyle.green)
     async def yes(self, interaction: discord.Interaction,
