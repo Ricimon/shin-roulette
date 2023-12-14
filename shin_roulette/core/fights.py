@@ -13,7 +13,7 @@ class Fight:
         self.show_role = show_role
 
 
-normal_fights = ['T4N', 'T5N', 'T10N', 'T11N', 'T12N', 'T13N']
+normal_fights = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T10N', 'T11N', 'T12N', 'T13N']
 
 extreme_fights = [
     'Ultima Weapon', 'Garuda', 'Titan', 'Ifrit', 'Moogle', 'Leviathan',
