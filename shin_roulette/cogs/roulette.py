@@ -96,6 +96,27 @@ class RouletteLobby:
                 buttons = None
         return (embed, buttons)
 
+    async def try_refresh_message(self,
+                                  interaction: discord.Interaction) -> bool:
+        """ 
+        Sometimes the lobby text can get desynced with the lobby backend data.
+        This function checks for the sync and updates the lobby text if desynced.
+        Returns true if an edit occurred as a result of a desync.
+        """
+
+        try:
+            (embed, buttons) = self.build_message()
+            if interaction.message.embeds[0].fields[0].value != embed.fields[
+                    0].value:
+                await interaction.response.edit_message(embed=embed,
+                                                        view=buttons)
+                return True
+            else:
+                return False
+        except:
+            raise
+            return False
+
     def run_roulette(self, players: List[str]):
         while len(players) < self.max_size:
             players.append(f'Player{len(players) + 1}')
@@ -156,15 +177,17 @@ class RouletteLobbyButtons(discord.ui.View):
                    _button: discord.ui.Button):
         try:
             if interaction.user.mention in self.roulette.players:
-                await interaction.response.send_message(
-                    f'You have already joined roulette {interaction.message.jump_url}',
-                    ephemeral=True)
+                if not await self.roulette.try_refresh_message(interaction):
+                    await interaction.response.send_message(
+                        f'You have already joined roulette {interaction.message.jump_url}',
+                        ephemeral=True)
                 return
 
             if self.roulette.is_full():
-                await interaction.response.send_message(
-                    f'Sorry, this roulette {interaction.message.jump_url} is full.',
-                    ephemeral=True)
+                if not await self.roulette.try_refresh_message(interaction):
+                    await interaction.response.send_message(
+                        f'Sorry, this roulette {interaction.message.jump_url} is full.',
+                        ephemeral=True)
                 return
 
             self.roulette.players.append(interaction.user.mention)
@@ -182,9 +205,10 @@ class RouletteLobbyButtons(discord.ui.View):
                     _button: discord.ui.Button):
         try:
             if interaction.user.mention not in self.roulette.players:
-                await interaction.response.send_message(
-                    f'You are not in this roulette {interaction.message.jump_url}',
-                    ephemeral=True)
+                if not await self.roulette.try_refresh_message(interaction):
+                    await interaction.response.send_message(
+                        f'You are not in this roulette {interaction.message.jump_url}',
+                        ephemeral=True)
                 return
 
             self.roulette.players.remove(interaction.user.mention)
