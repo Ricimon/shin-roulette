@@ -6,6 +6,10 @@ Shin Roulette picks a random 8-man raid and assigns each player a random role an
 
 Invite the bot here: https://discord.com/api/oauth2/authorize?client_id=1125704521251823667&permissions=2147493888&scope=bot
 
+Use `/roulette` to start a new lobby, and `/rouletteagain` to start a new lobby with the same players as the previous lobby.
+
+<img src="images/shin_roulette.png">
+
 ## Hosting the Bot
 
 ### Dependencies
@@ -42,3 +46,4 @@ running through Docker:
 ```bash
 docker-compose up -d
 ```
+
