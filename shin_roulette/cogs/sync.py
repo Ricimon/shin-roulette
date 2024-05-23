@@ -2,7 +2,9 @@
 A cog to add a command for syncing the command tree.
 """
 
+import logging
 from typing import Literal, Optional
+
 import discord
 from discord.ext import commands
 from discord.ext.commands import Greedy, Context
@@ -22,6 +24,9 @@ class SyncCog(commands.Cog):
         guilds: Greedy[discord.Object],
         spec: Optional[Literal["local", "copy", "clear", "global"]] = None
     ) -> None:
+
+        logging.debug('sync command used')
+
         if not guilds:
             if spec == "local":
                 message = await ctx.send("Syncing...")

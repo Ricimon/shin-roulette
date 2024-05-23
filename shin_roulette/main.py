@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 
@@ -19,25 +20,33 @@ class RouletteBot(commands.Bot):
 
     @watch(path="shin_roulette/cogs", preload=True)
     async def on_ready(self):
-        logging.info('Logged in as %s (ID: %s)', bot.user, bot.user.id)
+        logging.info('Logged in as %s (ID: %s)', self.user, self.user.id)
         await self.change_presence(activity=discord.Game("/roulette"))
 
     async def setup_hook(self):
         testing_guild_id = os.getenv("TEST_GUILD_ID")
         if testing_guild_id:
             testing_guild = discord.Object(id=testing_guild_id)
-            bot.tree.copy_global_to(guild=testing_guild)
+            self.tree.copy_global_to(guild=testing_guild)
 
 
-if __name__ == '__main__':
+async def main():
     # take environment variables from .env
     load_dotenv()
 
     # suppress an irrelevant warning
     discord.VoiceClient.warn_nacl = False
 
+    # initialize generic logging
     init_logging()
 
-    bot = RouletteBot()
+    # initialize discord.py console logging
+    discord.utils.setup_logging(level=logging.INFO, root=False)
 
-    bot.run(os.getenv("DISCORD_TOKEN"))
+    client = RouletteBot()
+
+    await client.start(os.getenv("DISCORD_TOKEN"))
+
+
+if __name__ == '__main__':
+    asyncio.run(main())

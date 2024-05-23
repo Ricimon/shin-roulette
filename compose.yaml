@@ -4,5 +4,4 @@ services:
     restart: unless-stopped
     volumes:
       - ./.env:/src/.env:ro
-    logging:
-      driver: local
+      - ./logs:/src/logs

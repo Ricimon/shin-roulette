@@ -31,6 +31,11 @@ LOGGING_CONFIG = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
         },
+        'console_info': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+        },
         'console_warning': {
             'level': 'WARNING',
             'class': 'logging.StreamHandler',
@@ -40,9 +45,9 @@ LOGGING_CONFIG = {
             'level': 'DEBUG',
             '()': CustomRotatingFileHandler,
             'filename': LOG_PATH,
-            'mode': 'w',
+            'mode': 'a',
             'formatter': 'verbose',
-            'backupCount': 3
+            'backupCount': 10
         },
     },
     'loggers': {
@@ -52,10 +57,16 @@ LOGGING_CONFIG = {
             'propagate': False,
         },
         'discord': {
-            'handlers': ['console_warning', 'file'],
+            # have discord.py setup its own console logger
+            'handlers': ['file'],
             'level': 'DEBUG',
             'propagate': False,
         },
+        'cogwatch': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False
+        }
     },
 }
 
