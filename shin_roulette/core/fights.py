@@ -44,7 +44,7 @@ alliance_fights = [
 
 guildhest_fights = ['Solemn Trinity Guildhest']
 
-exploration_fights = ['Delubrum Reginae']
+exploration_fights = ['Delubrum Reginae', 'Fall Guys!']
 
 standard_composition = [
     Role.TANK, Role.TANK, Subrole.REGEN, Subrole.SHIELD, Subrole.MELEE,
