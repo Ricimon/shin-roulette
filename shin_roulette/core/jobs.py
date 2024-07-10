@@ -47,12 +47,14 @@ all_jobs = [
     Job("NIN", Role.DPS, Subrole.MELEE),
     Job("SAM", Role.DPS, Subrole.MELEE),
     Job("RPR", Role.DPS, Subrole.MELEE),
+    Job("VPR", Role.DPS, Subrole.MELEE),
     Job("BRD", Role.DPS, Subrole.PHYS),
     Job("MCH", Role.DPS, Subrole.PHYS),
     Job("DNC", Role.DPS, Subrole.PHYS),
     Job("BLM", Role.DPS, Subrole.CASTER),
     Job("SMN", Role.DPS, Subrole.CASTER),
     Job("RDM", Role.DPS, Subrole.CASTER),
+    Job("PCT", Role.DPS, Subrole.CASTER),
 ]
 
 available_jobs = {
