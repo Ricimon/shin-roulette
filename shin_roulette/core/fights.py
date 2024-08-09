@@ -21,14 +21,18 @@ extreme_fights = [
     'Sophia', 'Zurvan', 'Susano', 'Lakshmi', 'Shinryu', 'Byakko', 'Tsukuyomi',
     'Suzaku', 'Seiryu', 'Titania', 'Innocence', 'Hades', 'Ruby', 'Varis',
     'Warrior of Light', 'Emerald', 'Diamond', 'Zodiark', 'Hydaelyn',
-    'Endsinger', 'Barbariccia', 'Rubicante', 'Golbez', 'Zeromus', 'Dawntrail First', 'Dawntrail Second'
+    'Endsinger', 'Barbariccia', 'Rubicante', 'Golbez', 'Zeromus',
+    'Valigarmanda', 'Zoraal Ja'
 ]
 extreme_fights = [s + ' EX' for s in extreme_fights]
 
 savage_fights = []
-for a in ['T', 'A', 'O', 'E', 'P']:
+for a in ['T', 'A', 'O', 'E', 'P', 'M']:
     if a == 'T':
         for i in range(6, 10):
+            savage_fights.append(f'{a}{i}S')
+    elif a == 'M':
+        for i in range(1, 5):
             savage_fights.append(f'{a}{i}S')
     else:
         for i in range(1, 13):
