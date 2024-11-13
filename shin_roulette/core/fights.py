@@ -22,7 +22,7 @@ extreme_fights = [
     'Suzaku', 'Seiryu', 'Titania', 'Innocence', 'Hades', 'Ruby', 'Varis',
     'Warrior of Light', 'Emerald', 'Diamond', 'Zodiark', 'Hydaelyn',
     'Endsinger', 'Barbariccia', 'Rubicante', 'Golbez', 'Zeromus',
-    'Valigarmanda', 'Zoraal Ja'
+    'Valigarmanda', 'Zoraal Ja', 'Sphene'
 ]
 extreme_fights = [s + ' EX' for s in extreme_fights]
 
@@ -43,7 +43,8 @@ ultimate_fights = ['UCOB', 'UWU', 'TEA', 'DSR', 'TOP']
 alliance_fights = [
     'The Royal City of Rabanastre', 'Ridorana Lighthouse', 'Orbonne Monastery',
     'The Copied Factory', 'The Puppet\'s Bunker',
-    'The Tower at Paradigms Breach', 'Aglaia', 'Euphrosyne', 'Thaleia'
+    'The Tower at Paradigms Breach', 'Aglaia', 'Euphrosyne', 'Thaleia',
+    'Jeuno: The First Walk'
 ]
 
 guildhest_fights = ['Solemn Trinity Guildhest']
