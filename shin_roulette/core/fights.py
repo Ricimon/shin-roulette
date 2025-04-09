@@ -32,7 +32,7 @@ for a in ['T', 'A', 'O', 'E', 'P', 'M']:
         for i in range(6, 10):
             savage_fights.append(f'{a}{i}S')
     elif a == 'M':
-        for i in range(1, 5):
+        for i in range(1, 9):
             savage_fights.append(f'{a}{i}S')
     else:
         for i in range(1, 13):
