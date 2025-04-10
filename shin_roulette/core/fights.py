@@ -22,7 +22,7 @@ extreme_fights = [
     'Suzaku', 'Seiryu', 'Titania', 'Innocence', 'Hades', 'Ruby', 'Varis',
     'Warrior of Light', 'Emerald', 'Diamond', 'Zodiark', 'Hydaelyn',
     'Endsinger', 'Barbariccia', 'Rubicante', 'Golbez', 'Zeromus',
-    'Valigarmanda', 'Zoraal Ja', 'Sphene'
+    'Valigarmanda', 'Zoraal Ja', 'Sphene', 'Zelenia'
 ]
 extreme_fights = [s + ' EX' for s in extreme_fights]
 
