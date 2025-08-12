@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shin-roulette"
-version = "0.2.7"
+version = "0.2.8"
 description = "A discord.py bot to do FFXIV content"
 authors = ["Ricimon <ricimon25@gmail.com>"]
 license = "MIT"
