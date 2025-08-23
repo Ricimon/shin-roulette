@@ -44,7 +44,7 @@ alliance_fights = [
     'The Royal City of Rabanastre', 'Ridorana Lighthouse', 'Orbonne Monastery',
     'The Copied Factory', 'The Puppet\'s Bunker',
     'The Tower at Paradigms Breach', 'Aglaia', 'Euphrosyne', 'Thaleia',
-    'Jeuno: The First Walk'
+    'Jeuno: The First Walk', 'San d\'Oria: The Second Walk'
 ]
 
 guildhest_fights = ['Solemn Trinity Guildhest']
