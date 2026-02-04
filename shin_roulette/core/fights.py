@@ -63,6 +63,7 @@ extreme_fights = [
     "Zelenia",
     "Necron",
     "Arkveld",
+    "Doom Train",
 ]
 extreme_fights = [s + " EX" for s in extreme_fights]
 
@@ -70,9 +71,6 @@ savage_fights = []
 for a in ["T", "A", "O", "E", "P", "M"]:
     if a == "T":
         for i in range(6, 10):
-            savage_fights.append(f"{a}{i}S")
-    elif a == "M":
-        for i in range(1, 9):
             savage_fights.append(f"{a}{i}S")
     else:
         for i in range(1, 13):
