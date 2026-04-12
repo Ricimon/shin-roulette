@@ -63,7 +63,7 @@ extreme_fights = [
     "Zelenia",
     "Necron",
     "Arkveld",
-    "Doom Train",
+    "Doomtrain",
 ]
 extreme_fights = [s + " EX" for s in extreme_fights]
 
