@@ -64,6 +64,7 @@ extreme_fights = [
     "Necron",
     "Arkveld",
     "Doomtrain",
+    "Enuo",
 ]
 extreme_fights = [s + " EX" for s in extreme_fights]
 
@@ -90,6 +91,7 @@ alliance_fights = [
     "Thaleia",
     "Jeuno: The First Walk",
     "San d'Oria: The Second Walk",
+    "Windurst: The Third Walk",
 ]
 
 guildhest_fights = ["Solemn Trinity Guildhest"]
