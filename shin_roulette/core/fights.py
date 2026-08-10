@@ -77,7 +77,7 @@ for a in ["T", "A", "O", "E", "P", "M"]:
         for i in range(1, 13):
             savage_fights.append(f"{a}{i}S")
 
-ultimate_fights = ["UCOB", "UWU", "TEA", "DSR", "TOP", "FRU"]
+ultimate_fights = ["UCOB", "UWU", "TEA", "DSR", "TOP", "FRU", "DMU"]
 
 alliance_fights = [
     "The Royal City of Rabanastre",
